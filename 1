@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Medical Symptom Checker</title>
+    <style>
+        /* CSS styling here */
+    </style>
+</head>
+<body>
+    <h1>Medical Symptom Checker</h1>
+    <p>Enter your symptoms to get general information and guidance.</p>
+
+    <label for="symptoms">Enter your symptoms:</label>
+    <input type="text" id="symptoms" placeholder="e.g., fever, headache, cough">
+    <button id="checkButton">Check Symptoms</button>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById("checkButton").addEventListener("click", () => {
+            const symptoms = document.getElementById("symptoms").value;
+
+            const apiKey = '418831.5bccf482f6297f7abbd229e2997dad6f98ba865e4c5f4a20792f5921a9326e45';
+
+            if (symptoms) {
+                fetch(`https://healthservice.priaid.ch`)
+                    .then(response => response.json())
+                    .then(data => {
+                        displaySymptomResults(data);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        });
+
+        function displaySymptomResults(data) {
+            const resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = '';
+
+            if (data && data.result) {
+                resultDiv.innerHTML = `<h2>Results:</h2><p>${data.result}</p>`;
+            } else {
+                resultDiv.innerHTML = '<p>No results found. Please try different symptoms.</p>';
+            }
+        }
+    </script>
+</body>
+</html>
